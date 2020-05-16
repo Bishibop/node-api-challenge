@@ -40,13 +40,27 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+2 parts of Express we learned about are Routing and Middleware. Routing allows
+us to map pairs of http methods and urls to application handlers. These pairings
+allow the server to respond to client requests. Middleware is described below.
+
 - [ ] Describe Middleware?
+
+Middleware is a function that can be inserted into the request-response cycle of one or many routes. Middleware processes the request before passing it forward to the next piece of middleware or ends the cycle with a response.
 
 - [ ] Describe a Resource?
 
+A Resource is an identifiable thing that can be accessed and manipulated through URIs and HTTP methods. If an HTTP method is a verb, a Resource is the noun.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+A "status code" in the 2xx range like 200 or 201.
+
 - [ ] How can we partition our application into sub-applications?
+
+We can do this by creating Router objects that handle subsets of the
+application's endpoints. These Router objects can be stored in separate files
+and imported and loaded into the main application. 
 
 ## Minimum Viable Product
 
