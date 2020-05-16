@@ -1,4 +1,5 @@
 const projectDb = require('../data/helpers/projectModel.js');
+const actionDb = require('../data/helpers/actionModel.js');
 
 const express = require('express');
 
@@ -28,6 +29,22 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   res.status(200).json(req.project);
+});
+
+router.get('/:id/actions', (req, res) => {
+  res.status(200).json(req.project.actions);
+});
+
+router.post('/:id/actions', validateAction, (req, res) => {
+  const newAction = {...req.body, project_id: req.params.id};
+  actionDb.insert(newAction).then(action => {
+    res.status(201).json(action);
+  }).catch(e => {
+    console.log('posting an action error: ', e);
+    res.status(500).json({
+      errorMessage: "There was an error while saving the action to the database"
+    });
+  });
 });
 
 router.put('/:id', (req, res) => {
@@ -81,6 +98,21 @@ function validateProjectId(req, res, next) {
       });
     }
   });
+}
+
+function validateAction(req, res, next) {
+  if (!Object.keys(req.body).length) {
+    res.status(400).json({
+      message: "missing action data"
+    });
+    // Don't need to test for `completed` because it is optional
+  } else if (!req.body.notes || !req.body.description ) {
+    res.status(400).json({
+      message: "missing required data fields: notes and description"
+    });
+  } else {
+    next()
+  }
 }
 
 module.exports = router;
